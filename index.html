@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<title>IA práctica para nefrología | Taller 26 feb 2026</title>
+<style>
+:root {
+  --navy: #1B3A5C;
+  --blue: #2B6CB0;
+  --teal: #00A99D;
+  --light-blue: #E8F4FD;
+  --gray-bg: #F0F2F5;
+  --gray-text: #64748B;
+  --white: #FFFFFF;
+  --shadow: 0 4px 24px rgba(27, 58, 92, 0.10);
+  --shadow-hover: 0 8px 32px rgba(27, 58, 92, 0.16);
+  --radius: 12px;
+  --sidebar-w: 260px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Montserrat', -apple-system, sans-serif;
+  background: var(--gray-bg);
+  color: var(--navy);
+  min-height: 100vh;
+}
+
+/* ===== HEADER ===== */
+.header {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 40%, var(--teal) 70%, #E0F2F1 90%);
+  color: white;
+  padding: 2rem 2rem 1.5rem;
+  position: relative;
+  margin-left: var(--sidebar-w);
+}
+.header-logo {
+  position: absolute;
+  top: 0; right: 1.5rem;
+  height: 100%;
+  padding: 0.8rem 0;
+  opacity: 0.92;
+}
+.header-text { padding-right: 130px; }
+.header-congress {
+  font-size: 0.8rem;
+  font-weight: 300;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  opacity: 0.75;
+  margin-bottom: 0.4rem;
+}
+.header h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: 0.4rem;
+}
+.header-meta {
+  font-size: 0.82rem;
+  font-weight: 300;
+  opacity: 0.8;
+  line-height: 1.5;
+}
+.header-meta strong { font-weight: 500; opacity: 1; }
+.header-meta a { color: white; text-decoration: underline; text-underline-offset: 2px; }
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+  position: fixed;
+  top: 0; left: 0;
+  width: var(--sidebar-w);
+  height: 100vh;
+  background: var(--white);
+  border-right: 1px solid #E2E8F0;
+  overflow-y: auto;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+}
+.sidebar-header {
+  padding: 1.2rem 1rem 0.8rem;
+  border-bottom: 1px solid #E2E8F0;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gray-text);
+}
+.sidebar-ref {
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid #E2E8F0;
+}
+.sidebar-ref button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.55rem 0.7rem;
+  margin-bottom: 0.3rem;
+  background: var(--light-blue);
+  border: 1px solid #B8D4E8;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--navy);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.sidebar-ref button:hover {
+  background: #D0E8F7;
+  border-color: var(--blue);
+}
+.sidebar-ref button:last-child { margin-bottom: 0; }
+
+.sidebar-nav { padding: 0.6rem 0; flex: 1; }
+.sidebar-nav a {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 1rem;
+  text-decoration: none;
+  color: var(--navy);
+  font-size: 0.8rem;
+  font-weight: 400;
+  border-left: 3px solid transparent;
+  transition: all 0.2s;
+}
+.sidebar-nav a:hover {
+  background: var(--gray-bg);
+  border-left-color: var(--teal);
+}
+.sidebar-nav a.active {
+  background: var(--light-blue);
+  border-left-color: var(--blue);
+  font-weight: 600;
+}
+.sidebar-nav a .nav-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: var(--gray-bg);
+  font-size: 0.7rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.sidebar-nav a.active .nav-num {
+  background: var(--blue);
+  color: white;
+}
+.sidebar-nav .nav-break {
+  padding: 0.5rem 1rem;
+  font-size: 0.72rem;
+  color: var(--gray-text);
+  font-style: italic;
+}
+
+/* ===== MAIN CONTENT ===== */
+.main {
+  margin-left: var(--sidebar-w);
+  padding: 2rem 2.5rem 4rem;
+  max-width: calc(var(--sidebar-w) + 900px);
+}
+
+/* ===== BLOCKS ===== */
+.block {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 2rem;
+  margin-bottom: 2rem;
+  scroll-margin-top: 1.5rem;
+}
+.block-header {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 1.2rem;
+}
+.block-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--blue);
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.block-title {
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+.block-meta {
+  font-size: 0.78rem;
+  color: var(--gray-text);
+  font-weight: 400;
+  margin-left: 0.3rem;
+}
+.block p {
+  font-size: 0.9rem;
+  line-height: 1.65;
+  margin-bottom: 1rem;
+}
+.block h3 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 1.5rem 0 0.6rem;
+  color: var(--navy);
+}
+.block ul, .block ol {
+  font-size: 0.9rem;
+  line-height: 1.65;
+  margin: 0 0 1rem 1.2rem;
+}
+
+/* ===== PROMPT BOXES ===== */
+.prompt-box {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-left: 4px solid var(--teal);
+  border-radius: 8px;
+  padding: 1rem 1.2rem;
+  margin: 1rem 0;
+  position: relative;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+.prompt-box .copy-btn {
+  position: absolute;
+  top: 0.5rem; right: 0.5rem;
+  background: var(--teal);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.3rem 0.7rem;
+  font-family: inherit;
+  font-size: 0.7rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.prompt-box .copy-btn:hover { background: #008F85; }
+.prompt-box .copy-btn.copied {
+  background: var(--navy);
+}
+
+/* ===== TOOL LINK ===== */
+.tool-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  background: linear-gradient(135deg, var(--blue), var(--teal));
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.2s;
+  margin: 0.5rem 0;
+}
+.tool-link:hover { transform: translateY(-1px); box-shadow: var(--shadow-hover); }
+
+/* ===== TABLES ===== */
+.block table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  margin: 1rem 0;
+}
+.block th {
+  background: var(--light-blue);
+  text-align: left;
+  padding: 0.6rem 0.8rem;
+  font-weight: 600;
+  font-size: 0.8rem;
+  border-bottom: 2px solid var(--blue);
+}
+.block td {
+  padding: 0.55rem 0.8rem;
+  border-bottom: 1px solid #E2E8F0;
+}
+
+/* ===== CASE CARD ===== */
+.case-card {
+  background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);
+  border: 1px solid #F59E0B;
+  border-radius: var(--radius);
+  padding: 1.2rem 1.5rem;
+  margin: 1rem 0;
+  font-size: 0.88rem;
+  line-height: 1.65;
+}
+.case-card strong { color: #92400E; }
+.case-card .patient-question {
+  font-style: italic;
+  margin-top: 0.8rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid #F59E0B;
+  color: #92400E;
+  font-weight: 500;
+}
+
+/* ===== BREAK BLOCK ===== */
+.break-block {
+  background: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%);
+  border: 1px dashed #22C55E;
+  border-radius: var(--radius);
+  padding: 1.5rem 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  scroll-margin-top: 1.5rem;
+}
+.break-block h2 { font-size: 1.1rem; color: #15803D; margin-bottom: 0.5rem; }
+.break-block p { font-size: 0.85rem; color: #166534; }
+
+/* ===== MODALS ===== */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(27, 58, 92, 0.5);
+  z-index: 200;
+  justify-content: center;
+  align-items: center;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  padding: 2rem;
+  max-width: 650px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+}
+.modal h2 {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  color: var(--navy);
+}
+.modal p, .modal li {
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+.modal ul { margin: 0.5rem 0 1rem 1.2rem; }
+.modal-close {
+  position: absolute;
+  top: 1rem; right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--gray-text);
+  line-height: 1;
+}
+.modal table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  margin: 1rem 0;
+}
+.modal th {
+  background: var(--light-blue);
+  text-align: left;
+  padding: 0.6rem 0.8rem;
+  font-weight: 600;
+  border-bottom: 2px solid var(--blue);
+}
+.modal td {
+  padding: 0.55rem 0.8rem;
+  border-bottom: 1px solid #E2E8F0;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  margin-left: var(--sidebar-w);
+  padding: 2rem;
+  text-align: center;
+  border-top: 1px solid #E2E8F0;
+  background: var(--white);
+}
+.footer img { height: 30px; opacity: 0.6; margin-bottom: 0.5rem; }
+.footer p {
+  font-size: 0.75rem;
+  color: var(--gray-text);
+  line-height: 1.6;
+}
+.footer a { color: var(--blue); text-decoration: none; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .header, .main, .footer { margin-left: 0; }
+  .header-text { padding-right: 80px; }
+  .header-logo { height: 60px; top: 1rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== SIDEBAR ===== -->
+<nav class="sidebar">
+  <div class="sidebar-header">Taller IA Nefrología</div>
+  <div class="sidebar-ref">
+    <button onclick="openModal('modal-checklist')">📋 Checklist de registro</button>
+    <button onclick="openModal('modal-caso')">🏥 Caso clínico</button>
+    <button onclick="openModal('modal-pico')">📊 Pregunta PICO</button>
+  </div>
+  <div class="sidebar-nav">
+    <a href="#bloque1"><span class="nav-num">1</span> Caso clínico y PICO</a>
+    <a href="#bloque2"><span class="nav-num">2</span> OpenEvidence</a>
+    <a href="#bloque3"><span class="nav-num">3</span> Undermind + Consensus</a>
+    <a href="#bloque4"><span class="nav-num">4</span> Elicit</a>
+    <div class="nav-break">☕ Descanso</div>
+    <a href="#bloque5"><span class="nav-num">5</span> NotebookLM</a>
+    <a href="#bloque6"><span class="nav-num">6</span> Gamma</a>
+    <a href="#bloque7"><span class="nav-num">7</span> Caso libre</a>
+  </div>
+</nav>
+
+<!-- ===== HEADER ===== -->
+<header class="header">
+  <img src="alterbiblio-logo.png" alt="AlterBiblio" class="header-logo">
+  <div class="header-text">
+    <div class="header-congress">Taller práctico</div>
+    <h1>IA práctica para búsqueda y extracción de información científica</h1>
+    <div class="header-meta">
+      Hospital Gregorio Marañón · 26 de febrero de 2026<br>
+      Formación organizada por AstraZeneca<br>
+      <strong><a href="https://www.linkedin.com/in/mariagps/" target="_blank">María García-Puente</a></strong> · AlterBiblio
+    </div>
+  </div>
+</header>
+
+<!-- ===== MAIN ===== -->
+<div class="main">
+
+  <!-- BLOQUE 1 -->
+  <section class="block" id="bloque1">
+    <div class="block-header">
+      <span class="block-num">1</span>
+      <div><span class="block-title">De la consulta a la pregunta PICO con ChatGPT</span><span class="block-meta"> · 15:40 – 16:05 (25 min)</span></div>
+    </div>
+
+    <p>Empezamos con un caso clínico real. El objetivo: convertir la duda de un paciente en una pregunta de investigación bien definida y estructurarla en formato PICO, con ayuda de un chatbot.</p>
+
+    <h3>El caso</h3>
+    <div class="case-card">
+      Varón de 65 años con diabetes mellitus tipo 2 (DM2) de 12 años de evolución y ERC estadio 3B (TFGe 35 ml/min/1,73m²) diagnosticada hace 2 años. Tratamiento actual: metformina 850 mg/12h, losartán 100 mg/día, amlodipino 5 mg/día. HbA1c 7,2%. Proteinuria persistente (UACR 280 mg/g). En la última analítica, la TFGe ha bajado a 32.
+      <div class="patient-question">"Doctor, he leído que hay unos medicamentos nuevos para el riñón... ¿no debería tomarlos?"</div>
+    </div>
+
+    <h3>Ejercicio: formular la pregunta de investigación con ChatGPT</h3>
+    <p>La pregunta de la paciente es vaga. Necesitamos convertirla en una pregunta de investigación precisa y luego estructurarla en formato PICO. Vamos a usar ChatGPT para que nos guíe en el proceso.</p>
+
+    <a href="https://chatgpt.com" target="_blank" class="tool-link">↗ Abrir ChatGPT</a>
+
+    <div class="prompt-box">Soy nefrólogo. Tengo un paciente de 65 años con DM2 y ERC estadio 3B, en tratamiento con metformina, losartán y amlodipino, con proteinuria persistente (UACR 280 mg/g) y descenso progresivo de TFGe (de 35 a 32). Me pregunta si debería tomar dapagliflozina para frenar la progresión renal.
+
+Quiero convertir esta situación clínica en una pregunta de investigación bien formulada y luego estructurarla en formato PICO. NO me des la respuesta directamente. Hazme preguntas una por una para ayudarme a definir bien cada elemento (qué quiero investigar exactamente, en qué población, qué intervención, qué comparador y qué desenlaces me interesan). Espera mi respuesta antes de pasar a la siguiente pregunta.<button class="copy-btn" onclick="copyPrompt(this)">Copiar</button></div>
+
+    <h3>Resultado esperado</h3>
+    <p>Tras el ejercicio con ChatGPT, deberíamos llegar a algo como esto:</p>
+
+    <p><strong>Pregunta de investigación:</strong> <em>¿Es el uso de dapagliflozina superior a la terapia estándar para reducir la progresión a diálisis en pacientes con ERC estadio 3B y diabetes mellitus tipo 2?</em></p>
+
+    <table class="criteria-table">
+      <thead><tr><th>PICO</th><th>Definición</th></tr></thead>
+      <tbody>
+        <tr><td><strong>P</strong> (Paciente)</td><td>Adultos con ERC estadio 3B y diabetes mellitus tipo 2, en tratamiento estándar (bloqueo del SRAA + antidiabéticos)</td></tr>
+        <tr><td><strong>I</strong> (Intervención)</td><td>Dapagliflozina añadida al tratamiento estándar</td></tr>
+        <tr><td><strong>C</strong> (Comparador)</td><td>Tratamiento estándar sin dapagliflozina (bloqueo SRAA + antidiabéticos + antihipertensivos)</td></tr>
+        <tr><td><strong>O</strong> (Outcome)</td><td>Progresión a diálisis (enfermedad renal terminal), descenso sostenido de TFGe ≥40% o duplicación de creatinina</td></tr>
+      </tbody>
+    </table>
+
+    <p>Esta pregunta PICO será la base de todas las búsquedas que hagamos en los siguientes bloques.</p>
+  </section>
+
+  <!-- BLOQUE 2 -->
+  <section class="block" id="bloque2">
+    <div class="block-header">
+      <span class="block-num">2</span>
+      <div><span class="block-title">Búsqueda de evidencia con OpenEvidence</span><span class="block-meta"> · 16:05 – 16:20 (15 min)</span></div>
+    </div>
+
+    <p>Ejecutamos la primera búsqueda real. OpenEvidence es una herramienta de IA diseñada para médicos: interpreta la pregunta en lenguaje natural y responde con referencias a artículos y guías clínicas.</p>
+
+    <a href="https://www.openevidence.com" target="_blank" class="tool-link">↗ Abrir OpenEvidence</a>
+
+    <h3>Ejercicio: misma pregunta, dos idiomas</h3>
+
+    <p><strong>En español:</strong></p>
+    <div class="prompt-box">¿Es la dapagliflozina superior a la terapia estándar para reducir la progresión a diálisis en pacientes con ERC estadio 3B y diabetes tipo 2?<button class="copy-btn" onclick="copyPrompt(this)">Copiar</button></div>
+
+    <p><strong>En inglés:</strong></p>
+    <div class="prompt-box">Is dapagliflozin superior to standard therapy for reducing progression to dialysis in patients with CKD stage 3B and type 2 diabetes?<button class="copy-btn" onclick="copyPrompt(this)">Copiar</button></div>
+
+    <h3>Qué observar</h3>
+    <ul>
+      <li>¿Salen los mismos estudios en ambos idiomas?</li>
+      <li>¿Las mismas recomendaciones?</li>
+      <li>Anotad los estudios clave (DAPA-CKD…): los necesitaréis después</li>
+    </ul>
+
+    <p><strong>Mensaje clave:</strong> para búsqueda de evidencia rigurosa, inglés. Para consultas rápidas del día a día, español puede valer.</p>
+  </section>
+
+  <!-- BLOQUE 3 -->
+  <section class="block" id="bloque3">
+    <div class="block-header">
+      <span class="block-num">3</span>
+      <div><span class="block-title">Búsqueda con Undermind y Consensus</span><span class="block-meta"> · 16:20 – 16:40 (20 min)</span></div>
+    </div>
+
+    <p>Dos herramientas con enfoques diferentes para contrastar lo que hemos encontrado con OpenEvidence.</p>
+
+    <table>
+      <tr><th>Herramienta</th><th>Enfoque</th><th>Mejor para</th></tr>
+      <tr><td><strong>Undermind</strong></td><td>Profundidad. Múltiples rondas de búsqueda, muestra su razonamiento</td><td>Revisión exhaustiva</td></tr>
+      <tr><td><strong>Consensus</strong></td><td>Panorámica. Medidor de consenso entre estudios</td><td>Visión global de la evidencia</td></tr>
+    </table>
+
+    <h3>Ejercicio: dividimos el aula</h3>
+    <p>Mitad izquierda → Undermind. Mitad derecha → Consensus. Misma pregunta:</p>
+
+    <a href="https://www.undermind.ai" target="_blank" class="tool-link">↗ Abrir Undermind</a>
+    <a href="https://consensus.app" target="_blank" class="tool-link">↗ Abrir Consensus</a>
+
+    <div class="prompt-box">Is dapagliflozin superior to standard therapy for reducing progression to dialysis in patients with CKD stage 3B and type 2 diabetes?<button class="copy-btn" onclick="copyPrompt(this)">Copiar</button></div>
+
+    <h3>Comparamos resultados</h3>
+    <ul>
+      <li>¿Han salido los mismos artículos en las tres herramientas?</li>
+      <li>¿Cuál os gusta más? → Depende del uso</li>
+      <li>¿Os fiaríais sólo de una? → No</li>
+    </ul>
+  </section>
+
+  <!-- BLOQUE 4 -->
+  <section class="block" id="bloque4">
+    <div class="block-header">
+      <span class="block-num">4</span>
+      <div><span class="block-title">Extracción de datos con Elicit</span><span class="block-meta"> · 16:40 – 17:15 (35 min)</span></div>
+    </div>
+
+    <p>Ya tenemos una lista de artículos de tres fuentes. ¿Vamos a leer 15 papers enteros? No. Elicit busca artículos por significado semántico y extrae datos automáticamente en columnas personalizables. Es como un becario de investigación que lee los papers y te rellena una tabla.</p>
+
+    <a href="https://elicit.com" target="_blank" class="tool-link">↗ Abrir Elicit</a>
+
+    <h3>Búsqueda</h3>
+    <div class="prompt-box">Dapagliflozin in diabetic chronic kidney disease stage 3 progression to dialysis<button class="copy-btn" onclick="copyPrompt(this)">Copiar</button></div>
+
+    <h3>Columnas a configurar</h3>
+    <p>Usamos los elementos de la pregunta PICO del bloque 1 como columnas de extracción. En Elicit, añadid columnas personalizadas. Para cada una, copiad el <strong>nombre</strong> y las <strong>instrucciones</strong>:</p>
+
+    <h4>1. Study design</h4>
+    <div class="prompt-box" style="margin-bottom:1rem">Classify the study design. Answer with one of: RCT, post-hoc analysis of RCT, systematic review, meta-analysis, observational cohort, or other. If it is a post-hoc or subgroup analysis, mention the parent trial name. Example:
+
+- Post-hoc analysis of DAPA-CKD trial<button class="copy-btn" onclick="copyPrompt(this)">Copiar</button></div>
+
+    <h4>2. Population &amp; eGFR</h4>
+    <div class="prompt-box" style="margin-bottom:1rem">Extract the baseline renal function of participants. Include:
+- eGFR range or mean ± SD at enrollment (ml/min/1.73m²)
+- CKD stage if stated
+- Whether the population includes type 2 diabetes, mixed etiologies, or has a diabetic subgroup analysis
+- Percentage of diabetic patients if reported
+
+Example:
+- Mean eGFR 37.3 ml/min/1.73m² (CKD 3b-4)
+- 67.5% diabetic; diabetic subgroup analysis available<button class="copy-btn" onclick="copyPrompt(this)">Copiar</button></div>
+
+    <h4>3. Intervention</h4>
+    <div class="prompt-box" style="margin-bottom:1rem">Extract the pharmacological intervention tested. Include drug name, dose, and administration route. If multiple doses were tested, list all arms. Example:
+
+- Dapagliflozin 10 mg/day oral<button class="copy-btn" onclick="copyPrompt(this)">Copiar</button></div>
+
+    <h4>4. Comparator</h4>
+    <div class="prompt-box" style="margin-bottom:1rem">Describe the comparator group. Specify if it is placebo, standard of care, active control, or a combination. Mention if all patients received background RAAS blockade. Example:
+
+- Placebo + standard of care (including RAAS inhibitors in 97% of patients)<button class="copy-btn" onclick="copyPrompt(this)">Copiar</button></div>
+
+    <h4>5. Primary renal outcome</h4>
+    <div class="prompt-box" style="margin-bottom:1rem">Extract the primary renal endpoint exactly as defined by the study. If it is a composite, list all components. Distinguish between the overall primary outcome and renal-specific outcomes if different. Example:
+
+- Composite: sustained ≥50% eGFR decline, ESKD, or renal death
+- Renal-specific secondary: sustained ≥57% eGFR decline or ESKD<button class="copy-btn" onclick="copyPrompt(this)">Copiar</button></div>
+
+    <h4>6. Main result</h4>
+    <div class="prompt-box" style="margin-bottom:1rem">Extract the main efficacy result for the renal outcome. Report hazard ratio (HR) or relative risk (RR) with 95% confidence interval and p-value. If there is a non-diabetic subgroup result, report that separately. Example:
+
+- Overall: HR 0.61 (95% CI 0.51–0.72; p<0.001)
+- Diabetic subgroup: HR 0.64 (95% CI 0.52–0.79)<button class="copy-btn" onclick="copyPrompt(this)">Copiar</button></div>
+
+    <h4>7. Follow-up</h4>
+    <div class="prompt-box" style="margin-bottom:1rem">Extract the follow-up duration. Report median follow-up in months or years. If the trial was stopped early, mention the reason. Example:
+
+- Median 2.4 years (stopped early for efficacy)<button class="copy-btn" onclick="copyPrompt(this)">Copiar</button></div>
+
+    <p>La pregunta PICO que definimos al principio no era un ejercicio teórico: sus elementos son exactamente las columnas que necesitamos ahora.</p>
+
+    <h3>Revisar la tabla</h3>
+    <ul>
+      <li>N total vs N del subgrupo diabético</li>
+      <li>HR global vs HR del subgrupo diabético</li>
+      <li>Confusión entre outcome compuesto y secundario</li>
+    </ul>
+    <p><strong>Elicit extrae, pero el clínico valida.</strong> Exportad la tabla (CSV) antes del descanso. La necesitaréis en NotebookLM.</p>
+  </section>
+
+  <!-- DESCANSO -->
+  <div class="break-block" id="descanso">
+    <h2>☕ Descanso (17:15 – 17:45)</h2>
+    <p>Descargad estos PDFs durante el descanso. Los vamos a subir a NotebookLM después.</p>
+    <p>
+      <a href="https://www.nejm.org/doi/pdf/10.1056/NEJMoa2024816" target="_blank" class="tool-link">↗ DAPA-CKD (Heerspink et al., NEJM 2020)</a>
+    </p>
+    <p><em>Si NEJM pide suscripción, buscad el título en <a href="https://pmc.ncbi.nlm.nih.gov" target="_blank">PubMed Central</a> (acceso libre).</em></p>
+  </div>
+
+  <!-- BLOQUE 5 -->
+  <section class="block" id="bloque5">
+    <div class="block-header">
+      <span class="block-num">5</span>
+      <div><span class="block-title">Síntesis y análisis con NotebookLM</span><span class="block-meta"> · 17:45 – 18:15 (30 min)</span></div>
+    </div>
+
+    <p>NotebookLM es una herramienta de Google que analiza documentos propios. Sólo trabaja con lo que tú le das: no busca en internet, no inventa. Cada respuesta incluye citas numeradas al párrafo original del documento.</p>
+
+    <a href="https://notebooklm.google" target="_blank" class="tool-link">↗ Abrir NotebookLM</a>
+
+    <h3>Subir fuentes</h3>
+    <ul>
+      <li>La tabla exportada de Elicit (CSV o Google Doc)</li>
+      <li>El PDF del artículo DAPA-CKD (descargado en el descanso)</li>
+    </ul>
+
+    <h3>Pregunta 1: síntesis narrativa</h3>
+    <div class="prompt-box">A partir de los documentos que te he proporcionado, resume en 3-4 párrafos la evidencia disponible sobre dapagliflozina para frenar la progresión de la enfermedad renal crónica en pacientes con diabetes tipo 2. Incluye los nombres de los ensayos clínicos principales y sus resultados.<button class="copy-btn" onclick="copyPrompt(this)">Copiar</button></div>
+
+    <h3>Pregunta 2: análisis crítico</h3>
+    <div class="prompt-box">Según los datos de los estudios que te he proporcionado:
+1. ¿Qué fármaco tiene mayor nivel de evidencia para esta indicación?
+2. ¿Los resultados son consistentes entre los diferentes ensayos?
+3. ¿Hay lagunas importantes en la evidencia o poblaciones poco representadas?<button class="copy-btn" onclick="copyPrompt(this)">Copiar</button></div>
+
+    <h3>Pregunta 3: generar presentación</h3>
+    <div class="prompt-box">Genera una presentación de 5-7 diapositivas sobre el ensayo DAPA-CKD para una sesión clínica hospitalaria. Incluye: objetivo del estudio, diseño, población, resultados principales, resultados en pacientes con DM2 y conclusiones. Formato claro y conciso.<button class="copy-btn" onclick="copyPrompt(this)">Copiar</button></div>
+
+    <p>Comparad la síntesis de NotebookLM con la tabla de Elicit. ¿Coinciden las cifras? ¿Ha omitido algún estudio? Anotad el resultado: lo vamos a comparar con Gamma.</p>
+  </section>
+
+  <!-- BLOQUE 6 -->
+  <section class="block" id="bloque6">
+    <div class="block-header">
+      <span class="block-num">6</span>
+      <div><span class="block-title">Presentación con Gamma</span><span class="block-meta"> · 18:15 – 18:40 (25 min)</span></div>
+    </div>
+
+    <p>Gamma es un generador de presentaciones con IA: le das texto o un documento y genera diapositivas con diseño. Vamos a darle la misma tarea que a NotebookLM y comparar.</p>
+
+    <a href="https://gamma.app" target="_blank" class="tool-link">↗ Abrir Gamma</a>
+
+    <h3>Ejercicio</h3>
+    <p>Pegad en Gamma el resumen generado por NotebookLM y pedid:</p>
+    <div class="prompt-box">Convierte este texto en una presentación de 5-7 diapositivas para una sesión clínica hospitalaria. Estilo profesional y sobrio, sin exceso de texto en cada diapositiva.<button class="copy-btn" onclick="copyPrompt(this)">Copiar</button></div>
+
+    <h3>Comparación NotebookLM vs Gamma</h3>
+    <table>
+      <tr><th>Aspecto</th><th>NotebookLM</th><th>Gamma</th></tr>
+      <tr><td>Diseño visual</td><td>No (texto plano)</td><td>Sí (colores, iconos, layout)</td></tr>
+      <tr><td>Fidelidad al paper</td><td>Alta, con citas</td><td>Variable, puede añadir info</td></tr>
+      <tr><td>Cita fuentes</td><td>Sí (numeradas)</td><td>No de la misma manera</td></tr>
+      <tr><td>Tono</td><td>Técnico/académico</td><td>Divulgativo/ejecutivo</td></tr>
+      <tr><td>Usable tal cual</td><td>No (falta formato)</td><td>Casi (revisar contenido)</td></tr>
+    </table>
+
+    <p><strong>Mensaje clave:</strong> NotebookLM es riguroso pero feo. Gamma es bonito pero se toma libertades. Flujo ideal: NotebookLM para contenido → Gamma para diseño → revisar.</p>
+
+    <h3>Recapitulación del flujo completo</h3>
+    <ol>
+      <li><strong>Caso clínico + ChatGPT</strong> → pregunta de investigación → PICO</li>
+      <li><strong>OpenEvidence</strong> → primera búsqueda, lección del idioma</li>
+      <li><strong>Undermind + Consensus</strong> → contrastar fuentes</li>
+      <li><strong>Elicit</strong> → extracción de datos (columnas = PICO)</li>
+      <li><strong>NotebookLM</strong> → síntesis narrativa con citas</li>
+      <li><strong>Gamma</strong> → presentación visual</li>
+    </ol>
+    <p><em>En 3 horas habéis pasado de una paciente que os pregunta en consulta a una presentación lista para una sesión clínica.</em></p>
+  </section>
+
+  <!-- BLOQUE 7 -->
+  <section class="block" id="bloque7">
+    <div class="block-header">
+      <span class="block-num">7</span>
+      <div><span class="block-title">Caso práctico libre</span><span class="block-meta"> · 18:40 – 19:15 (35 min)</span></div>
+    </div>
+
+    <p>Ahora os toca a vosotros. Elegid vuestra propia pregunta clínica (algo que tengáis pendiente en el servicio) o una de las propuestas, y recorred el flujo.</p>
+
+    <h3>Caso alternativo 1: Anemia en ERC</h3>
+    <div class="case-card">
+      Paciente de 67 años con ERC estadio 4 en hemodiálisis, 6 meses con EPO, Hb 9,5 g/dL estable, ferritina 800 ng/mL, IST 25%.
+      <div class="patient-question">"¿No hay otra cosa? Las inyecciones me dejan hecho polvo."</div>
+    </div>
+    <p><em>¿Qué alternativas a los AEE han demostrado eficacia en la anemia asociada a ERC en diálisis?</em></p>
+
+    <h3>Caso alternativo 2: Hiperpotasemia crónica</h3>
+    <div class="case-card">
+      Mujer de 72 años, ERC 3b + IC. Sacubitrilo/valsartán + espironolactona. K+ 5,5-5,8 en últimos 3 controles. Ya con restricción dietética. El cardiólogo no quiere quitar espironolactona.
+      <div class="patient-question">"¿No hay manera de controlar el potasio sin quitarme las pastillas del corazón?"</div>
+    </div>
+    <p><em>¿Qué opciones farmacológicas existen para la hiperpotasemia crónica en ERC con iRAAS + ARM, más allá de dieta y resinas clásicas?</em></p>
+
+    <h3>Flujo de trabajo</h3>
+    <table>
+      <tr><th>Paso</th><th>Herramienta</th><th>Tiempo</th></tr>
+      <tr><td>Pregunta PICO</td><td>ChatGPT</td><td>5 min</td></tr>
+      <tr><td>Búsqueda</td><td>OpenEvidence / Undermind / Consensus</td><td>5 min</td></tr>
+      <tr><td>Extracción</td><td>Elicit</td><td>10 min</td></tr>
+      <tr><td>Síntesis</td><td>NotebookLM (si da tiempo)</td><td>5 min</td></tr>
+    </table>
+    <p>No es necesario llegar a Gamma. El objetivo es practicar el flujo.</p>
+  </section>
+
+  <!-- CIERRE -->
+  <section class="block" id="cierre">
+    <div class="block-header">
+      <div><span class="block-title">Debate y cierre</span><span class="block-meta"> · 19:15 – 19:30 (15 min)</span></div>
+    </div>
+
+    <h3>Para la reflexión</h3>
+    <ul>
+      <li>¿Usaríais esto en una sesión clínica real?</li>
+      <li>¿Dónde aporta más valor la IA? ¿Dónde es más peligroso fiarse?</li>
+      <li>¿Cuál os ha sorprendido más? ¿Cuál vais a usar el lunes?</li>
+      <li>¿Presentaríais algo generado sólo por IA sin revisar?</li>
+    </ul>
+
+    <h3>Mensajes clave</h3>
+    <ul>
+      <li><strong>La IA no sustituye al clínico</strong></li>
+      <li><strong>Cruzar fuentes es obligatorio</strong></li>
+      <li><strong>Verificar siempre los datos numéricos</strong></li>
+      <li><strong>Declarar el uso de IA</strong></li>
+      <li><strong>No subir datos de pacientes reales</strong></li>
+    </ul>
+
+    <h3>Herramientas del taller</h3>
+    <table>
+      <tr><th>Herramienta</th><th>Para qué</th><th>Precio</th></tr>
+      <tr><td><a href="https://chatgpt.com" target="_blank">ChatGPT</a></td><td>Formular pregunta de investigación y PICO</td><td>Freemium</td></tr>
+      <tr><td><a href="https://www.openevidence.com" target="_blank">OpenEvidence</a></td><td>Búsqueda clínica rápida</td><td>Gratuito</td></tr>
+      <tr><td><a href="https://www.undermind.ai" target="_blank">Undermind</a></td><td>Búsqueda profunda en literatura</td><td>Freemium</td></tr>
+      <tr><td><a href="https://consensus.app" target="_blank">Consensus</a></td><td>Grado de consenso en la evidencia</td><td>Freemium</td></tr>
+      <tr><td><a href="https://elicit.com" target="_blank">Elicit</a></td><td>Extracción de datos en tabla</td><td>Freemium</td></tr>
+      <tr><td><a href="https://notebooklm.google" target="_blank">NotebookLM</a></td><td>Síntesis de documentos propios</td><td>Gratuito</td></tr>
+      <tr><td><a href="https://gamma.app" target="_blank">Gamma</a></td><td>Presentaciones visuales</td><td>Freemium</td></tr>
+    </table>
+
+    <p style="margin-top:1.5rem; text-align:center; font-size:0.85rem;">
+      Las herramientas cambian rápido. El flujo de trabajo<br>
+      <em>(pregunta → búsqueda → extracción → síntesis → presentación)</em><br>
+      no cambia.
+    </p>
+
+    <p style="text-align:center; margin-top:1rem;">
+      <strong>Segunda sesión presencial:</strong> 19 de marzo de 2026<br>
+      <strong>Contacto:</strong> <a href="mailto:maria@alterbiblio.com">maria@alterbiblio.com</a>
+    </p>
+  </section>
+
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <img src="alterbiblio-logo.png" alt="AlterBiblio"><br>
+  <p>
+    © 2026 AlterBiblio · <a href="https://www.linkedin.com/in/mariagps/" target="_blank">María García-Puente</a> · <a href="mailto:maria@alterbiblio.com">maria@alterbiblio.com</a>
+  </p>
+</footer>
+
+<!-- ===== MODALS ===== -->
+
+<!-- Modal: Checklist -->
+<div class="modal-overlay" id="modal-checklist" onclick="closeModal(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModalById('modal-checklist')">×</button>
+    <h2>📋 Checklist de registro</h2>
+    <p>Para aprovechar el taller al máximo, registraos en todas las herramientas <strong>antes de venir</strong>. El registro es gratuito en todas.</p>
+    <table>
+      <tr><th>Herramienta</th><th>URL</th><th>Notas</th></tr>
+      <tr><td>ChatGPT</td><td><a href="https://chatgpt.com" target="_blank">chatgpt.com</a></td><td>O Claude, Gemini, Perplexity</td></tr>
+      <tr><td>OpenEvidence</td><td><a href="https://www.openevidence.com" target="_blank">openevidence.com</a></td><td>Requiere verificación sanitaria</td></tr>
+      <tr><td>Undermind</td><td><a href="https://www.undermind.ai" target="_blank">undermind.ai</a></td><td></td></tr>
+      <tr><td>Consensus</td><td><a href="https://consensus.app" target="_blank">consensus.app</a></td><td></td></tr>
+      <tr><td>Elicit</td><td><a href="https://elicit.com" target="_blank">elicit.com</a></td><td></td></tr>
+      <tr><td>NotebookLM</td><td><a href="https://notebooklm.google" target="_blank">notebooklm.google</a></td><td>Necesita cuenta de Google</td></tr>
+      <tr><td>Gamma</td><td><a href="https://gamma.app" target="_blank">gamma.app</a></td><td></td></tr>
+    </table>
+    <p style="margin-top:1rem;"><strong>Necesitaréis:</strong> ordenador portátil con conexión a internet y cuenta de Google (Gmail).</p>
+  </div>
+</div>
+
+<!-- Modal: Caso clínico -->
+<div class="modal-overlay" id="modal-caso" onclick="closeModal(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModalById('modal-caso')">×</button>
+    <h2>🏥 Caso clínico</h2>
+    <div class="case-card">
+      Varón de 65 años con diabetes mellitus tipo 2 (DM2) de 12 años de evolución y ERC estadio 3B (TFGe 35 ml/min/1,73m²) diagnosticada hace 2 años. Tratamiento actual: metformina 850 mg/12h, losartán 100 mg/día, amlodipino 5 mg/día. HbA1c 7,2%. Proteinuria persistente (UACR 280 mg/g). En la última analítica, la TFGe ha bajado a 32.
+      <div class="patient-question">"Doctor, he leído que hay unos medicamentos nuevos para el riñón... ¿no debería tomarlos?"</div>
+    </div>
+    <h3 style="margin-top:1rem;">Pregunta de investigación</h3>
+    <p><em>¿Es el uso de dapagliflozina superior a la terapia estándar para reducir la progresión a diálisis en pacientes con ERC estadio 3B y diabetes mellitus tipo 2?</em></p>
+  </div>
+</div>
+
+<!-- Modal: PICO -->
+<div class="modal-overlay" id="modal-pico" onclick="closeModal(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModalById('modal-pico')">×</button>
+    <h2>📊 Pregunta PICO</h2>
+    <p><strong>Pregunta de investigación:</strong> <em>¿Es el uso de dapagliflozina superior a la terapia estándar para reducir la progresión a diálisis en pacientes con ERC estadio 3B y diabetes mellitus tipo 2?</em></p>
+    <table>
+      <tr><th>Componente</th><th>Elemento</th></tr>
+      <tr><td><strong>P</strong> (Población)</td><td>Adultos con ERC estadio 3B y diabetes mellitus tipo 2, en tratamiento estándar (bloqueo del SRAA + antidiabéticos)</td></tr>
+      <tr><td><strong>I</strong> (Intervención)</td><td>Dapagliflozina añadida al tratamiento estándar</td></tr>
+      <tr><td><strong>C</strong> (Comparador)</td><td>Tratamiento estándar sin dapagliflozina (bloqueo SRAA + antidiabéticos + antihipertensivos)</td></tr>
+      <tr><td><strong>O</strong> (Outcome)</td><td>Progresión a diálisis (enfermedad renal terminal), descenso sostenido de TFGe ≥40% o duplicación de creatinina</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ===== SCRIPTS ===== -->
+<script>
+// Password protection
+(function(){
+  var p = prompt("Contraseña:");
+  if (p !== "NefroIA2026") {
+    document.body.innerHTML = "<p style='text-align:center;margin-top:40vh;font-family:Montserrat,sans-serif;color:#999'>Acceso denegado</p>";
+    throw "";
+  }
+})();
+
+// Copy prompt
+function copyPrompt(btn) {
+  const box = btn.parentElement;
+  const text = box.textContent.replace('Copiar', '').replace('Copiado', '').trim();
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copiado';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'Copiar';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+
+// Modals
+function openModal(id) {
+  document.getElementById(id).classList.add('open');
+}
+function closeModal(event) {
+  event.currentTarget.classList.remove('open');
+}
+function closeModalById(id) {
+  document.getElementById(id).classList.remove('open');
+}
+
+// Active nav on scroll
+const sections = document.querySelectorAll('.block, .break-block');
+const navLinks = document.querySelectorAll('.sidebar-nav a');
+
+function updateActiveNav() {
+  let current = '';
+  sections.forEach(section => {
+    const top = section.getBoundingClientRect().top;
+    if (top < 200) current = section.id;
+  });
+  navLinks.forEach(link => {
+    link.classList.remove('active');
+    if (link.getAttribute('href') === '#' + current) {
+      link.classList.add('active');
+    }
+  });
+}
+window.addEventListener('scroll', updateActiveNav);
+updateActiveNav();
+</script>
+
+</body>
+</html>
